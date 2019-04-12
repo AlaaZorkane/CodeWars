@@ -17,16 +17,15 @@
                <span>Live Game</span>
                <v-icon right>open_in_new</v-icon>
             </v-btn>
-            <v-btn @click="signedIn = !signedIn" flat color="grey">
+            <v-btn @click="signOut" flat color="grey">
                <span>Sign Out</span>
                <v-icon right>exit_to_app</v-icon>
             </v-btn>
          </div>
 
-
          <!-- If signed out -->
          <div v-else>
-            <v-btn @click="signedIn = !signedIn" flat color="grey">
+            <v-btn @click="signIn" flat color="grey">
                <span>Sign In</span>
                <v-icon right>meeting_room</v-icon>
             </v-btn>
@@ -39,8 +38,50 @@
 
        <v-navigation-drawer app v-model="drawer" class="primary">
          <v-layout column align-center>
-            <v-flex class="my-5">
-               <p class="white--text subheading mt-1">{{teamName}}</p>
+            <v-flex class="mt-5 mb-4">
+               <h1 class="white--text font-weight-bold display-1">{{teamName}}</h1>
+            </v-flex>
+            <!-- HP -->
+            <v-flex>
+               <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                     <v-chip label outline color="red" v-on="on">
+                        <v-icon left color="red" class="mr-1">favorite</v-icon>
+                        {{health}} / 100
+                     </v-chip>
+                  </template>
+                  <span>Health points</span>
+               </v-tooltip>
+            </v-flex>
+            <!-- Rank -->
+            <v-flex>
+               <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                     <v-chip label outline color="yellow" v-on="on">
+                        <v-icon left color="yellow" class="mr-1">star</v-icon>
+                        <span v-if="rank === 1">1st </span>
+                        <span v-else-if="rank === 2">2nd </span>
+                        <span v-else-if="rank === 3">3rd </span>
+                        <span v-else>{{rank}}th </span>
+                     </v-chip>
+                  </template>
+                  <span>Your rank</span>
+               </v-tooltip>
+            </v-flex>
+            <!-- Attack Points -->
+            <v-flex>
+               <v-chip label outline color="green">
+                  <v-icon left color="green" class="mr-1">monetization_on</v-icon>
+                  {{points}} pts
+               </v-chip>
+            </v-flex>
+            <!-- Problems solved -->
+            <v-flex class="mb-4">
+               <v-chip label outline color="blue">
+                  <v-icon left color="blue" class="mr-0">flash_on</v-icon>
+                  <span v-if="solved > 0">{{solved}} challenge<span v-if="solved > 1">s</span> solved</span>
+                  <span v-else>No challenges solved yet :(</span>
+               </v-chip>
             </v-flex>
          </v-layout>
          <v-divider></v-divider>
@@ -68,12 +109,26 @@ export default {
             { icon: 'code', text: 'Challenges', route: '/' },
             { icon: 'attach_money', text: 'Shop', route: '/shop' },
             { icon: 'flash_on', text: 'Actions', route: '/actions' },
-            { icon: 'stars', text: 'ScoreBoard', route: '/scoreboard' },
+            { icon: 'stars', text: 'Scoreboard', route: '/scoreboard' },
             { icon: 'people', text: 'Teams', route: '/teams' },
          ],
          signedIn: true,
          drawer: false,
-         teamName: "SK Telecom"
+         /* Dummy team data */
+         teamName: "SK Telecom",
+         health: 90,
+         points: 164,
+         rank: 1,
+         solved: 0
+      }
+   },
+   methods: {
+      signIn(){
+         this.signedIn = true
+      },
+      signOut(){
+         this.signedIn = false
+         this.drawer = false
       }
    }
 }
