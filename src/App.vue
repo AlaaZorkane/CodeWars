@@ -2,10 +2,18 @@
   <v-app dark class="bg">
     <Navbar v-if="connected"/>
     <v-content>
-      <v-container fluid>
+      <v-container>
         <router-view></router-view>
       </v-container>
     </v-content>
+    <v-tooltip left>
+      <template v-slot:activator="{ on }">
+        <v-btn href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" absolute fab fixed light depressed class="live" v-on="on">
+            <v-icon color="black">cast</v-icon>
+        </v-btn>
+      </template>
+      <span>Watch live action (opens in new tab)</span>
+    </v-tooltip>
   </v-app>
 </template>
 
@@ -35,5 +43,9 @@ export default {
     background-repeat: repeat !important;
     background-size: auto !important;
     background-position: left top !important;
+}
+.live {
+  bottom: 18px;
+  right: 30px;
 }
 </style>

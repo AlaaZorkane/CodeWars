@@ -13,10 +13,6 @@
          </v-toolbar-title>
          <v-spacer></v-spacer>
          <div v-if="signedIn">
-            <v-btn flat color="grey">
-               <span>Live Game</span>
-               <v-icon right>open_in_new</v-icon>
-            </v-btn>
             <v-btn @click="signOut" flat color="grey">
                <span>Sign Out</span>
                <v-icon right>exit_to_app</v-icon>
@@ -36,10 +32,13 @@
          </div>
       </v-toolbar>
 
-       <v-navigation-drawer app v-model="drawer" class="primary">
+      <v-navigation-drawer app v-model="drawer" class="primary">
          <v-layout column align-center>
-            <v-flex class="mt-5 mb-4">
+            <v-flex class="mt-5">
                <h1 class="white--text font-weight-bold display-1">{{teamName}}</h1>
+            </v-flex>
+            <v-flex class="mb-2">
+               <p class="caption font-weight-light">{{description}}</p>
             </v-flex>
             <!-- HP -->
             <v-flex>
@@ -70,10 +69,15 @@
             </v-flex>
             <!-- Attack Points -->
             <v-flex>
-               <v-chip label outline color="green">
-                  <v-icon left color="green" class="mr-1">monetization_on</v-icon>
-                  {{points}} pts
-               </v-chip>
+               <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                     <v-chip label outline color="green" v-on="on">
+                        <v-icon left color="green" class="mr-1">monetization_on</v-icon>
+                        {{points}} points
+                     </v-chip>
+                  </template>
+                  <span>Use these at the shop!</span>
+               </v-tooltip>
             </v-flex>
             <!-- Problems solved -->
             <v-flex class="mb-4">
@@ -115,11 +119,15 @@ export default {
          signedIn: true,
          drawer: false,
          /* Dummy team data */
-         teamName: "SK Telecom",
+         teamName: "SKTelecom",
+         description: "The cake is a lie, also you, also me",
          health: 90,
          points: 164,
          rank: 1,
          solved: 0
+         // component(teamName,.. ) <-- general state VUEX <-- sqllite
+         // GET REQUEST - Header(sktelecom)
+         // return health points rank solved
       }
    },
    methods: {
