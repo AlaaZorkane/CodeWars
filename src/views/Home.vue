@@ -16,31 +16,35 @@
     <!-- Challenges -->
     <v-container class="my-5">
       <v-expansion-panel>
-        <v-expansion-panel-content v-for="challenge in challenges" :key="challenge.id">
-          
+        <v-expansion-panel-content v-for="challenge in challenges" :key="challenge.id" :class="{ 'green darken-3': data[challenge.id].solved }">
           <!-- Challenge title and infos -->
           <div slot="header" class="pt-1 font-weight-bold">
             {{ challenge.title }}
             <v-divider vertical></v-divider>
+            <v-chip v-if="data[challenge.id].solved" label color="blue lighten-1" v-on="on">
+              <v-icon left color="white" class="mr-1">star</v-icon>
+              <span>Solved</span>
+            </v-chip>
+            <v-divider vertical></v-divider>
             <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <v-chip v-if="challenge.solvedBy.length>0" label color="green" v-on="on">
-                      <v-icon left color="white" class="mr-1">golf_course</v-icon>
-                      <span>{{challenge.solvedBy.length}} solve<span v-if="challenge.solvedBy.length > 1">s</span></span>
-                    </v-chip>
-                    <v-chip v-else label color="red" v-on="on">
-                      <v-icon left color="white" class="mr-1">whatshot</v-icon>
-                      <span>Not yet solved</span>
-                    </v-chip>
-                  </template>
-                  <span v-if="challenge.solvedBy.length>0">
-                    <span v-for="solver in challenge.solvedBy" :key="challenge.solvedBy.indexOf(solver)">
-                      {{solver}}
-                      <v-divider v-if="challenge.solvedBy.indexOf(solver)+1 < challenge.solvedBy.length"></v-divider>
-                    </span>
-                  </span>
-                  <span v-else>{{Math.round(challenge.prize/4)}} extra points for first solve!</span>
-               </v-tooltip>
+              <template v-slot:activator="{ on }">
+                <v-chip v-if="challenge.solvedBy.length>0" label color="green" v-on="on">
+                  <v-icon left color="white" class="mr-1">golf_course</v-icon>
+                  <span>{{challenge.solvedBy.length}} solve<span v-if="challenge.solvedBy.length > 1">s</span></span>
+                </v-chip>
+                <v-chip v-else label color="red" v-on="on">
+                  <v-icon left color="white" class="mr-1">whatshot</v-icon>
+                  <span>Not yet solved</span>
+                </v-chip>
+              </template>
+              <span v-if="challenge.solvedBy.length>0">
+                <span v-for="solver in challenge.solvedBy" :key="challenge.solvedBy.indexOf(solver)">
+                  {{solver}}
+                  <v-divider v-if="challenge.solvedBy.indexOf(solver)+1 < challenge.solvedBy.length"></v-divider>
+                </span>
+              </span>
+              <span v-else>{{Math.round(challenge.prize/4)}} extra points for first solve!</span>
+            </v-tooltip>
           </div>
 
           <!-- Challenge description -->
@@ -55,7 +59,8 @@
                       Submit answer
                       </v-btn>
                   </template>
-                  <span class="black--text">{{3 - data[challenge.id].attempts}} attempt<span v-if="3 - data[challenge.id].attempts>1">s</span> left!</span>
+                  <span class="black--text">{{3 - data[challenge.id].attempts}} attempt<span v-if="3 - data[challenge.id].attempts>1">s</span> left!
+                  </span>
               </v-tooltip>
               <!-- Challenge extras -->
               <v-divider v-if="challenge.firstBlood != ''" class="my-2"></v-divider>
@@ -88,15 +93,19 @@ export default {
         {title: "hard"}
       ],
       // Dummy Data
+
+      // Challenges ( public data to all teams )
       challenges:[
         {id:0, title:"Sum of integers", difficulty:"easy", prize:50, bonus:20, event:false, firstBlood:"TheBigWeewees", solvedBy:["TheBigWeewees", "xRoots"], hintState:false, hint:"use your brain", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"},
         {id:1, title:"Sum of primes", difficulty:"easy", prize:110, bonus:40, event:false, firstBlood:"xRoots", solvedBy:["xRoots"], hintState:false, hint:"The big weewee is never a biggest weewee", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"},
         {id:2, title:"Sum of books", difficulty:"medium", prize:250, bonus:100, event:false, firstBlood:"", solvedBy:[], hintState:true, hint:"The hint is hidden in a rock", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam"},
       ],
+
+      // Private data ( unique to connected team )
       data:[
-        {id:0, attempts:1},
-        {id:0, attempts:2},
-        {id:0, attempts:0}
+        {id:0, attempts:1, solved: true},
+        {id:1, attempts:2, solved: false},
+        {id:2, attempts:0, solved: false}
       ]
     }
   }
