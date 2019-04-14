@@ -124,7 +124,7 @@ export default {
          health: 90,
          points: 164,
          rank: 1,
-         solved: 0
+         solved: 1
          // component(teamName,.. ) <-- general state VUEX <-- sqllite
          // GET REQUEST - Header(sktelecom)
          // return health points rank solved
